@@ -1,0 +1,399 @@
+{
+  "name": {
+    "message": "Similarweb - Website Traffic & SEO Checker"
+  },
+  "description": {
+    "message": "Instant website analysis and SEO metrics at your fingertips."
+  },
+  "data_view_desktop_only": {
+    "message": "Desktop Only"
+  },
+  "data_view_geo_see_more": {
+    "message": "See more countries"
+  },
+  "data_view_geo_table_header_left": {
+    "message": "Country"
+  },
+  "data_view_geo_table_title": {
+    "message": "Top $NUMBER$ Countries",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "data_view_geo_title": {
+    "message": "Geography"
+  },
+  "data_view_geo_tooltip": {
+    "message": "Traffic Share"
+  },
+  "data_view_traffic_and_engagement": {
+    "message": "Traffic and Engagement"
+  },
+  "data_view_traffic_and_engagement_all_traffic": {
+    "message": "All Traffic"
+  },
+  "data_view_traffic_and_engagement_bouncerate": {
+    "message": "Bounce Rate"
+  },
+  "data_view_traffic_and_engagement_ga_tooltip": {
+    "message": "Measured by Google Analytics"
+  },
+  "data_view_traffic_and_engagement_pagepervisit": {
+    "message": "Pages per Visit"
+  },
+  "data_view_traffic_and_engagement_see_more": {
+    "message": "Go to traffic and engagement"
+  },
+  "data_view_traffic_and_engagement_timeonsite": {
+    "message": "Avg. Visit Duration"
+  },
+  "data_view_traffic_and_engagement_visits": {
+    "message": "Monthly Visits"
+  },
+  "data_view_traffic_and_engagement_visits_over_time": {
+    "message": "Visits Over Time"
+  },
+  "data_view_traffic_sources_direct": {
+    "message": "Direct"
+  },
+  "data_view_traffic_sources_mail": {
+    "message": "Email"
+  },
+  "data_view_traffic_sources_paid_referrals": {
+    "message": "Display Ads"
+  },
+  "data_view_traffic_sources_referrals": {
+    "message": "Referrals"
+  },
+  "data_view_traffic_sources_search": {
+    "message": "Search"
+  },
+  "data_view_traffic_sources_social": {
+    "message": "Social"
+  },
+  "data_view_traffic_sources_table_header_left": {
+    "message": "Source"
+  },
+  "data_view_traffic_sources_title": {
+    "message": "Traffic Sources"
+  },
+  "data_view_traffic_sources_tooltip": {
+    "message": "Traffic Source"
+  },
+  "data_view_worldwide": {
+    "message": "Worldwide"
+  },
+  "date_range_filter_hook_text_free_trial": {
+    "message": "View More with a Free Trial of Our Platform"
+  },
+  "date_range_filter_hook_text_platform": {
+    "message": "View More Historical Data on Our Platform"
+  },
+  "date_range_filter_last_1_option": {
+    "message": "Last 1 Month <span>($0$)</span>",
+    "placeholders": {
+      "0": {
+        "content": "$1"
+      }
+    }
+  },
+  "date_range_filter_last_2_option": {
+    "message": "Last 2 Month <span>($1$ - $0$)</span>",
+    "placeholders": {
+      "0": {
+        "content": "$1"
+      },
+      "1": {
+        "content": "$2"
+      }
+    }
+  },
+  "date_range_filter_last_3_option": {
+    "message": "Last 3 Month <span>($2$ - $0$)</span>",
+    "placeholders": {
+      "0": {
+        "content": "$1"
+      },
+      "1": {
+        "content": "$2"
+      },
+      "2": {
+        "content": "$3"
+      }
+    }
+  },
+  "error_view_subtitle": {
+    "message": "Something went wrong. Please try again in few minutes."
+  },
+  "error_view_title": {
+    "message": "Oops!"
+  },
+  "go_to_similarweb": {
+    "message": "Go to Similarweb"
+  },
+  "invalid_popup_button": {
+    "message": "Got it"
+  },
+  "invalid_popup_subtitle": {
+    "message": "This website is not supported.\nPlease enter a website in the address bar so that we can provide you with relevant data."
+  },
+  "invalid_popup_title": {
+    "message": "Enter a Website"
+  },
+  "keywords_branded_non_branded_filter_hook_text": {
+    "message": "Filter Branded & Non-Branded Keywords"
+  },
+  "keywords_branded_non_branded_filter_label": {
+    "message": "Branded & Non-Branded"
+  },
+  "keywords_branded_non_branded_filter_option_1": {
+    "message": "Branded & Non-Branded"
+  },
+  "keywords_branded_non_branded_filter_option_2": {
+    "message": "Branded"
+  },
+  "keywords_branded_non_branded_filter_option_2_tooltip": {
+    "message": "Showing search terms that include the brand name"
+  },
+  "keywords_branded_non_branded_filter_option_3": {
+    "message": "Non-Branded"
+  },
+  "keywords_branded_non_branded_filter_option_3_tooltip": {
+    "message": "Showing search terms that do not include the brand name"
+  },
+  "keywords_organic_paid_filter_hook_text": {
+    "message": "Filter Between Organic & Paid Traffic"
+  },
+  "keywords_organic_paid_filter_label": {
+    "message": "Organic & Paid"
+  },
+  "keywords_organic_paid_filter_option_1": {
+    "message": "Organic & Paid Traffic"
+  },
+  "keywords_organic_paid_filter_option_2": {
+    "message": "Organic Traffic"
+  },
+  "keywords_organic_paid_filter_option_2_tooltip": {
+    "message": "Showing search terms that drove traffic to a website by clicks on organic search results"
+  },
+  "keywords_organic_paid_filter_option_3": {
+    "message": "Paid Traffic"
+  },
+  "keywords_organic_paid_filter_option_3_tooltip": {
+    "message": "Showing search terms that drove traffic to a website by clicks on paid search results"
+  },
+  "keywords_see_more": {
+    "message": "See more keywords"
+  },
+  "keywords_table_filter_hook_text_non_registered": {
+    "message": "Create an Account to View All These Metrics and More!"
+  },
+  "keywords_table_filter_hook_text_registered": {
+    "message": "View All These Metrics and More on Our Platform"
+  },
+  "keywords_table_filter_option_competitive_traffic_share": {
+    "message": "Competitive Traffic Share"
+  },
+  "keywords_table_filter_option_competitive_traffic_share_tooltip": {
+    "message": "The distribution of traffic between different websites"
+  },
+  "keywords_table_filter_option_cpc": {
+    "message": "Cost per Click"
+  },
+  "keywords_table_filter_option_cpc_tooltip": {
+    "message": "Estimated price (USD) that advertisers pay to buy an ad in Google Adwords triggered by the keyword, in the selected country, from the past 30 days"
+  },
+  "keywords_table_filter_option_position": {
+    "message": "Position"
+  },
+  "keywords_table_filter_option_position_tooltip": {
+    "message": "The URL's average organic position on the Google Search Engine Results Page in the selected time frame"
+  },
+  "keywords_table_filter_option_serp_features": {
+    "message": "SERP Features"
+  },
+  "keywords_table_filter_option_serp_features_tooltip": {
+    "message": "All the SERP features identified for this keyword, broken down by those the website did and did not rank for"
+  },
+  "keywords_table_filter_option_volume": {
+    "message": "Volume"
+  },
+  "keywords_table_filter_option_volume_tooltip": {
+    "message": "Monthly avg. of searches performed for the keyword in Google, in the selected country, over the last 12 months"
+  },
+  "keywords_table_header_keyword": {
+    "message": "Keyword"
+  },
+  "keywords_table_header_traffic": {
+    "message": "Traffic"
+  },
+  "keywords_title": {
+    "message": "Top Keywords"
+  },
+  "limit_banner_link": {
+    "message": "Unlock unlimited access"
+  },
+  "limit_banner_link_non_paying": {
+    "message": "Buy a package for unlimited access"
+  },
+  "limit_banner_link_non_registered": {
+    "message": "Sign up to get an extra $EXTRA_LIMIT$ per week",
+    "placeholders": {
+      "extra_limit": {
+        "content": "$1"
+      }
+    }
+  },
+  "limit_banner_text": {
+    "message": "Weekly usage:"
+  },
+  "limit_banner_text_tooltip": {
+    "message": "Your weekly limit resets every Monday"
+  },
+  "limit_modal_blocker_button": {
+    "message": "Unlock unlimited access"
+  },
+  "limit_modal_blocker_button_non_paying": {
+    "message": "Contact Sales"
+  },
+  "limit_modal_blocker_button_non_paying_marketing": {
+    "message": "Go to the pricing page"
+  },
+  "limit_modal_blocker_button_non_registered": {
+    "message": "Create your free account"
+  },
+  "limit_modal_blocker_text": {
+    "message": "Congrats, you’re a Similarweb power user!<br />You can create an account to go unlimited."
+  },
+  "limit_modal_blocker_text_non_paying": {
+    "message": "Congrats, you’re a Similarweb power user!<br />You can purchase one of our packages to get unlimited extension access."
+  },
+  "limit_modal_blocker_text_non_registered": {
+    "message": "Congrats, you’re a Similarweb power user!<br />Sign up to increase your weekly limit from $LIMIT$ to $LIMIT_AFTER$.",
+    "placeholders": {
+      "limit": {
+        "content": "$1"
+      },
+      "limit_after": {
+        "content": "$2"
+      }
+    }
+  },
+  "limit_modal_blocker_title": {
+    "message": "You’ve reached your weekly limit."
+  },
+  "limit_modal_default_button": {
+    "message": "Sign up now"
+  },
+  "limit_modal_default_button_non_paying": {
+    "message": "Contact Sales"
+  },
+  "limit_modal_default_button_non_paying_marketing": {
+    "message": "Go to the pricing page"
+  },
+  "limit_modal_default_button_non_registered": {
+    "message": "Sign up now"
+  },
+  "limit_modal_default_text": {
+    "message": "Sign up for free to unlock unlimited access"
+  },
+  "limit_modal_default_text_non_paying": {
+    "message": "Purchase one of our packages to get unlimited extension access."
+  },
+  "limit_modal_default_text_non_registered": {
+    "message": "Create an account to increase your weekly limit from the $LIMIT$ to $LIMIT_AFTER$",
+    "placeholders": {
+      "limit": {
+        "content": "$1"
+      },
+      "limit_after": {
+        "content": "$2"
+      }
+    }
+  },
+  "limit_modal_default_title": {
+    "message": "Similarweb’s chrome extension<br />now limited to $LIMIT$ uses per week",
+    "placeholders": {
+      "limit": {
+        "content": "$1"
+      }
+    }
+  },
+  "menu_item_account": {
+    "message": "Account"
+  },
+  "menu_item_feedback": {
+    "message": "Feedback"
+  },
+  "menu_item_rate": {
+    "message": "Rate us"
+  },
+  "menu_item_share": {
+    "message": "Share"
+  },
+  "more_insights": {
+    "message": "More insights"
+  },
+  "no_data_placeholder_text": {
+    "message": "No data available"
+  },
+  "no_data_view_cta": {
+    "message": "Click Here"
+  },
+  "no_data_view_subtitle": {
+    "message": "We currently lack sufficient data to show complete estimations for this website. Rest assured, we are working tirelessly to provide the world with the most reliable data about every website and every app.\nIf you are the owner of this site,\nyou can connect your site's Google Analytics,\nto present your data on Similarweb."
+  },
+  "no_data_view_title": {
+    "message": "We're sorry but..."
+  },
+  "not_available": {
+    "message": "N/A"
+  },
+  "ranking_category_rank": {
+    "message": "Category Rank"
+  },
+  "ranking_country_rank": {
+    "message": "Country Rank"
+  },
+  "ranking_global_rank": {
+    "message": "Global Rank"
+  },
+  "ranking_title": {
+    "message": "Ranking"
+  },
+  "rate_modal_button": {
+    "message": "Rate"
+  },
+  "rate_modal_button_done": {
+    "message": "Done"
+  },
+  "rate_modal_button_feedback": {
+    "message": "Feedback"
+  },
+  "rate_modal_text": {
+    "message": "Loved It!"
+  },
+  "rate_modal_text_error": {
+    "message": "Please select your rating"
+  },
+  "rate_modal_title": {
+    "message": "Rate This Extension"
+  },
+  "rate_modal_title_success": {
+    "message": "Thank you!"
+  },
+  "share_modal_link_copied": {
+    "message": "Copied"
+  },
+  "share_modal_title": {
+    "message": "Share Similarweb"
+  },
+  "similarweb_platform": {
+    "message": "Similarweb platform"
+  },
+  "want_to_see_more_insights": {
+    "message": "Want to see more insights?"
+  }
+}

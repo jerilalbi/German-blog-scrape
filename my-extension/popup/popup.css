@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/DMSans-Regular.ttf");
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/DMSans-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 324px;
+  height: 204px;
+  margin: 0;
+  font-family: "DM Sans", sans-serif;
+}
+
+#popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
