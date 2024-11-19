@@ -1,8 +1,10 @@
-const { resolve } = require('path');
+const path = require('path');
 const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const fs = require('fs');
 const csvWriter = require('csv-writer');
+const axios = require('axios');
+const { parseStringPromise } = require('xml2js');
 
 const linuxUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
 
@@ -10,12 +12,13 @@ puppeteer.use(StealthPlugin());
 (async () => {
     try {
         // const extensionPath = path.join(process.cwd(), 'my-extension');
-        let pageLimit = 2;
+        let pageLimit = 10000;
         let websiteData = [];
         const webisteCategory = "blog";
         let testNo = 1;
 
         const browser = await puppeteer.launch({
+            // headless: "new",
             headless: false,
             // args: [
             //     `--disable-extensions-except=${extensionPath}`,
@@ -25,7 +28,7 @@ puppeteer.use(StealthPlugin());
 
         const page = await browser.newPage();
         await page.setUserAgent(linuxUserAgent);
-        outerLoop: for (let pageNo = 0; pageNo <= pageLimit; pageNo++) {
+        outerLoop: for (let pageNo = 451; pageNo <= pageLimit; pageNo++) {
             await page.goto(`https://www.webwiki.de/${webisteCategory}?page=${pageNo}`, { waitUntil: 'networkidle2' });
             // await page.goto(`https://www.webwiki.de/neueste-bewertungen/a.html?page=1`, { waitUntil: 'networkidle2' });
 
@@ -35,84 +38,102 @@ puppeteer.use(StealthPlugin());
                 return el.map((val) => val.innerText)
             });
 
-            const allPages = await page.$eval(".suchinfo.pull-right.hidden-xs", el => el.innerText);
-            const totalPages = allPages.match(/\d+$/)[0];
-            pageLimit = totalPages;
+            // const allPages = await page.$eval(".suchinfo.pull-right.hidden-xs", el => el.innerText);
+            // const totalPages = allPages.match(/\d+$/)[0];
+            // pageLimit = totalPages;
 
             for (const link of links) {
-                console.log(testNo);
-                testNo++;
-
-                const websitePage = await browser.newPage();
-                await websitePage.setUserAgent(linuxUserAgent);
-
-                // await websitePage.goto(`https://timesofindia.indiatimes.com/`, { waitUntil: 'networkidle2' });
                 try {
-                    // await websitePage.goto(`https://www.bloggeralarm.com/`, { waitUntil: 'networkidle2' });
-                    await websitePage.goto(`https://www.${link}`, { waitUntil: 'networkidle2' });
-                    // await websitePage.goto(`http://aura-naturaromen.de/`, { waitUntil: 'domcontentloaded', timeout: 10000 });
-                } catch (error) { }
+                    if (link.toLowerCase().endsWith(".de")) {
+                        console.log(testNo);
+                        testNo++;
 
-                // if (websiteResponse && websiteResponse.status() === 200) {
-                //     console.log(websiteResponse.status())
-                await websitePage.waitForSelector("body")
+                        const websitePage = await browser.newPage();
+                        await websitePage.setUserAgent(linuxUserAgent);
 
-                const elementCount = await websitePage.evaluate(() => {
-                    return document.body.querySelectorAll('*').length;
-                });
+                        try {
+                            // await websitePage.goto(`https://www.skoda-portal.de/`, { waitUntil: 'networkidle2' });
+                            await websitePage.goto(`https://www.${link}`, { waitUntil: 'networkidle2' });
+                        } catch (error) { }
 
-                if (elementCount > 30) {
+                        await websitePage.waitForSelector("body")
 
-                    const lastUpdatedDate = await websitePage.evaluate(() => {
-                        const metaTag = document.querySelector('meta[property="article:modified_time"]');
-                        return metaTag ? metaTag.getAttribute('content') : null;
-                    });
-
-                    const inputDate = new Date(lastUpdatedDate);
-                    const oneYearAgo = new Date();
-                    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
-                    if (lastUpdatedDate && inputDate < oneYearAgo) {
-                        console.log(`${link}: ${lastUpdatedDate.split("T")[0]}`);
-
-                        const hasAds = await websitePage.evaluate(() => {
-                            const bodyText = document.body.innerHTML.toLowerCase();
-                            const adKeywords = ['advertisement', 'promoted', 'adservice.google.com', 'adsbygoogle'];
-                            return adKeywords.some(keyword => bodyText.includes(keyword));
+                        const elementCount = await websitePage.evaluate(() => {
+                            return document.body.querySelectorAll('*').length;
                         });
 
-                        if (hasAds) {
-                            console.log('Website with ads = ' + link);
-                        } else {
-                            const trafficPage = await browser.newPage();
-                            await trafficPage.setUserAgent(linuxUserAgent);
-                            await trafficPage.goto(`https://data.similarweb.com/api/v1/data?domain=${link}`, { waitUntil: 'networkidle2' });
+                        if (elementCount > 30) {
 
-                            const jsonData = await trafficPage.evaluate(() => {
-                                return JSON.parse(document.body.innerText);
+                            let inputDate;
+                            let lastUpdatedDate = await websitePage.evaluate(() => {
+                                const metaTag = document.querySelector('meta[property="article:modified_time"]');
+                                return metaTag ? metaTag.getAttribute('content') : null;
                             });
-                            const trafficData = jsonData["EstimatedMonthlyVisits"]["2024-10-01"];
 
-                            if (trafficData <= 10000) {
-                                websiteData.push({
-                                    name: link,
-                                    monthly_viewers: trafficData,
-                                    last_updated: lastUpdatedDate.split("T")[0],
-                                    website: `https://www.${link}`
-                                })
+                            let lastModified = await websitePage.evaluate(() => {
+                                const lastModDate = document.lastModified;
+                                return lastModDate;
+                            });
+
+                            if (lastUpdatedDate) {
+                                inputDate = new Date(lastUpdatedDate);
+                            } else {
+                                lastUpdatedDate = await checkXmlPage(link) ?? lastModified;
+                                inputDate = new Date(lastUpdatedDate)
                             }
-                            await trafficPage.close();
-                            // console.log('No active AdSense account detected on the website.');
+
+                            const oneYearAgo = new Date();
+                            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+                            if (lastUpdatedDate && inputDate < oneYearAgo) {
+                                console.log(`${link}: ${lastUpdatedDate.split("T")[0]}`);
+
+                                const hasAds = await websitePage.evaluate(() => {
+                                    const bodyText = document.body.innerHTML.toLowerCase();
+                                    const adKeywords = ['advertisement', 'promoted', 'adservice.google.com', 'adsbygoogle'];
+                                    return adKeywords.some(keyword => bodyText.includes(keyword));
+                                });
+
+                                if (hasAds) {
+                                    console.log('Website with ads = ' + link);
+                                } else {
+                                    const trafficPage = await browser.newPage();
+                                    await trafficPage.setUserAgent(linuxUserAgent);
+                                    await trafficPage.goto(`https://data.similarweb.com/api/v1/data?domain=${link}`, { waitUntil: 'networkidle2' });
+
+                                    const jsonData = await trafficPage.evaluate(() => {
+                                        return JSON.parse(document.body.innerText);
+                                    });
+
+                                    const avgTrafficData = parseInt((jsonData["EstimatedMonthlyVisits"]["2024-10-01"] + jsonData["EstimatedMonthlyVisits"]["2024-09-01"] + jsonData["EstimatedMonthlyVisits"]["2024-08-01"]) / 3);
+
+
+                                    if (avgTrafficData >= 1000 && avgTrafficData <= 10000) {
+                                        websiteData.push({
+                                            name: link,
+                                            monthly_viewers: avgTrafficData,
+                                            last_updated: lastUpdatedDate.split("T")[0],
+                                            website: `https://www.${link}`
+                                        })
+                                    }
+                                    await trafficPage.close();
+                                }
+                                console.log(`current data length = ${websiteData.length}`)
+                                await new Promise(resolve => setTimeout(resolve, 2000));
+                            }
+                            if (websiteData.length >= 20) {
+
+                                break outerLoop;
+                            }
                         }
-                        console.log(`current data length = ${websiteData.length}`)
+                        await websitePage.close();
+                    }
+                } catch (error) {
+                    console.log(error.message)
+                    if (error.message === "net::ERR_INTERNET_DISCONNECTED") {
                         await new Promise(resolve => setTimeout(resolve, 2000));
                     }
-                    if (websiteData.length >= 5) {
-
-                        break outerLoop;
-                    }
                 }
-                await websitePage.close();
             }
             if (websiteData.length > 0) {
                 makeExcelFile(websiteData);
@@ -140,14 +161,20 @@ puppeteer.use(StealthPlugin());
 })();
 
 function makeExcelFile(websiteData) {
+
+    // const filePath = 'website_data.csv';
+
+    // const fileExists = fs.existsSync(filePath);
+
     const writer = csvWriter.createObjectCsvWriter({
-        path: 'website_data.csv',
-        header: [
-            { id: 'name', title: 'Name' },
-            { id: 'monthly_viewers', title: 'Viewers' },
-            { id: 'last_updated', title: 'Last Updated' },
-            { id: 'url', title: 'URL' },
-        ]
+        path: 'website_data_sample.csv',
+        header:
+            [
+                { id: 'name', title: 'Name' },
+                { id: 'monthly_viewers', title: 'Viewers' },
+                { id: 'last_updated', title: 'Last Updated' },
+                { id: 'url', title: 'URL' },
+            ]
     });
 
     const formattedData = websiteData.map(item => ({
@@ -163,4 +190,32 @@ function makeExcelFile(websiteData) {
             console.error('Error writing CSV file:', err);
         });
 }
-//
+
+async function checkXmlPage(link) {
+    try {
+        const url = `https://www.${link}/sitemap.xml`;
+        const response = await axios.get(url);
+        const xmlData = response.data;
+
+        const parsedData = await parseStringPromise(xmlData);
+
+        const urls = parsedData.urlset.url;
+        if (urls[0].lastmod) {
+            return urls[0].lastmod[0]
+        }
+    } catch (error) {
+
+    }
+}
+
+// change https://www.dia-blog.de/ - 6, 8, 10, 11, 12, 15, 20
+// https://www.skoda-portal.de/
+// https://karminrot-blog.de/
+// https://kielfeder-blog.de/
+// https://www.yourdealz.de/
+// https://out-takes.de/
+// https://www.hh-gruppe.de/
+//https://fairwertung.de/
+// https://www.abmahnung.de/
+
+// Finished - upto 35 .... pages check = 460
