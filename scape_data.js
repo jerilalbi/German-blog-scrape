@@ -5,6 +5,7 @@ const fs = require('fs');
 const csvWriter = require('csv-writer');
 const axios = require('axios');
 const { parseStringPromise } = require('xml2js');
+const { timeout } = require('puppeteer');
 
 const linuxUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
 
@@ -28,7 +29,7 @@ puppeteer.use(StealthPlugin());
 
         const page = await browser.newPage();
         await page.setUserAgent(linuxUserAgent);
-        outerLoop: for (let pageNo = 451; pageNo <= pageLimit; pageNo++) {
+        outerLoop: for (let pageNo = 2561; pageNo <= pageLimit; pageNo++) {
             await page.goto(`https://www.webwiki.de/${webisteCategory}?page=${pageNo}`, { waitUntil: 'networkidle2' });
             // await page.goto(`https://www.webwiki.de/neueste-bewertungen/a.html?page=1`, { waitUntil: 'networkidle2' });
 
@@ -56,7 +57,7 @@ puppeteer.use(StealthPlugin());
                             await websitePage.goto(`https://www.${link}`, { waitUntil: 'networkidle2' });
                         } catch (error) { }
 
-                        await websitePage.waitForSelector("body")
+                        await websitePage.waitForSelector("body", { timeout: "60000" })
 
                         const elementCount = await websitePage.evaluate(() => {
                             return document.body.querySelectorAll('*').length;
@@ -69,16 +70,12 @@ puppeteer.use(StealthPlugin());
                                 const metaTag = document.querySelector('meta[property="article:modified_time"]');
                                 return metaTag ? metaTag.getAttribute('content') : null;
                             });
-
-                            let lastModified = await websitePage.evaluate(() => {
-                                const lastModDate = document.lastModified;
-                                return lastModDate;
-                            });
+                            // let lastUpdatedDate;
 
                             if (lastUpdatedDate) {
                                 inputDate = new Date(lastUpdatedDate);
                             } else {
-                                lastUpdatedDate = await checkXmlPage(link) ?? lastModified;
+                                lastUpdatedDate = await checkXmlPage(link);
                                 inputDate = new Date(lastUpdatedDate)
                             }
 
@@ -121,7 +118,7 @@ puppeteer.use(StealthPlugin());
                                 console.log(`current data length = ${websiteData.length}`)
                                 await new Promise(resolve => setTimeout(resolve, 2000));
                             }
-                            if (websiteData.length >= 20) {
+                            if (websiteData.length >= 50) {
 
                                 break outerLoop;
                             }
@@ -208,7 +205,7 @@ async function checkXmlPage(link) {
     }
 }
 
-// change https://www.dia-blog.de/ - 6, 8, 10, 11, 12, 15, 20
+// change https://www.dia-blog.de/ - 6, 8, 10, 11, 12, 15, 20 solved
 // https://www.skoda-portal.de/
 // https://karminrot-blog.de/
 // https://kielfeder-blog.de/
@@ -217,5 +214,79 @@ async function checkXmlPage(link) {
 // https://www.hh-gruppe.de/
 //https://fairwertung.de/
 // https://www.abmahnung.de/
+// https://www.rgf.de/de/home/
+// https://www.bellaswonderworld.de/blog/
+// https://o-tonart.de/category/blog/
+// https://www.conventionbureau-karlsruhe.de/
+// https://www.centigrade.de/de/blog/
+// https://www.sem-deutschland.de/
+// https://www.amperpark.de/
+// https://www.geizstudent.de/blog/
+// https://www.personal-wissen.de/
+// https://www.dtms.de/
+// https://karriere-und-bildung.de/
+// https://anstiftung.de/
+// https://silvesterlauf.de/
+// https://www.savills.de/
+// https://www.flowbirthing.de/
+// https://innocenceindanger.de/blog/
+// https://textil-mode.de/de/ - 70
+// https://www.indesign-blog.de/
+// https://www.telefontraining-claudiafischer.de/
+// https://www.metahr.de/
+// https://www.freiberufler-blog.de/
+// https://www.christagoede.de/
+// https://www.sepago.de/en/home/
+// https://www.spike05.de/
+// https://www.reisebineblog.de/
+// https://www.rss-blog.de/
+// https://www.freilichtbuehne-nettelstedt.de/
+// https://www.crossgolf.de/
+// https://www.der-hammerwirt.de/
+// https://ghostwriter-blog.de/
+// https://dotcomblog.de/
+// https://eineweltblabla.de/
+// https://www.arminkoenig.de/
+// https://www.domus-software.de/
+// https://www.lemm.de/
+// https://www.der-wirtschaftspruefungs-blog.de/
+// https://dgl-online.de/
+// https://sosimmer.de/
+// https://www.jungundaltspielt.de/
+// https://evs-blog.de/
+// https://www.radkultur-bw.de/ --- upto solved
+
+//https://dmsg-niedersachsen.de/
+// https://www.alexfuerst.de/
+//https://initiative-gegen-die-todesstrafe.de/
+// https://www.schiller-buch.de/
+// https://seo.de/
+// https://muk-blog.de/
+// https://www.bleiben-sie-sicher.de/  -- upto solved
+
+//https://www.nepomucenum.de/
+// https://www.bahnhofsvision.de/
+// https://www.buerodienste-in.de/
+// https://www.definition-von-fett.de/
+// https://www.philipp-poisel.de/
+// https://www.gge-blog.de/
+//https://profashionals.de/
+// https://apotheke-bergkamen.de/
+// https://www.junge-selbsthilfe-blog.de/
+// https://www.burgerbe.de/
+// https://www.kallebaecker.de/
+// https://www.benutzerfreun.de/
+// https://fosteringinnovation.de/
+// https://watchthusiast.de/
+//https://www.unternehmer-impulse.de/
+// https://songtexte-schreiben-lernen.de/blog/ -- solved
+
+
 
 // Finished - upto 35 .... pages check = 460
+
+// 101 - 56
+
+// Wed, 12 Jul 2017
+
+// final csv checked - 64
