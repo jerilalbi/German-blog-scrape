@@ -29,7 +29,7 @@ puppeteer.use(StealthPlugin());
 
         const page = await browser.newPage();
         await page.setUserAgent(linuxUserAgent);
-        outerLoop: for (let pageNo = 2561; pageNo <= pageLimit; pageNo++) {
+        outerLoop: for (let pageNo = 3251; pageNo <= pageLimit; pageNo++) {
             await page.goto(`https://www.webwiki.de/${webisteCategory}?page=${pageNo}`, { waitUntil: 'networkidle2' });
             // await page.goto(`https://www.webwiki.de/neueste-bewertungen/a.html?page=1`, { waitUntil: 'networkidle2' });
 
@@ -135,6 +135,8 @@ puppeteer.use(StealthPlugin());
             if (websiteData.length > 0) {
                 makeExcelFile(websiteData);
             }
+            console.log(`page no: ${pageNo}`);
+
         }
         await page.close();
         console.log(websiteData);
