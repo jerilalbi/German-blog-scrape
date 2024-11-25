@@ -13,9 +13,11 @@ puppeteer.use(StealthPlugin());
 (async () => {
     try {
         // const extensionPath = path.join(process.cwd(), 'my-extension');
-        let pageLimit = 10000;
+        let pageLimit = 370;
+        // let pageLimit = 10000;
         let websiteData = [];
-        const webisteCategory = "blog";
+        const webisteCategory = "travel-blog";
+        // const webisteCategory = "blog";
         let testNo = 1;
 
         const browser = await puppeteer.launch({
@@ -29,7 +31,7 @@ puppeteer.use(StealthPlugin());
 
         const page = await browser.newPage();
         await page.setUserAgent(linuxUserAgent);
-        outerLoop: for (let pageNo = 3251; pageNo <= pageLimit; pageNo++) {
+        outerLoop: for (let pageNo = 158; pageNo <= pageLimit; pageNo++) {
             await page.goto(`https://www.webwiki.de/${webisteCategory}?page=${pageNo}`, { waitUntil: 'networkidle2' });
             // await page.goto(`https://www.webwiki.de/neueste-bewertungen/a.html?page=1`, { waitUntil: 'networkidle2' });
 
@@ -63,7 +65,7 @@ puppeteer.use(StealthPlugin());
                             return document.body.querySelectorAll('*').length;
                         });
 
-                        if (elementCount > 30) {
+                        if (elementCount > 10) {
 
                             let inputDate;
                             let lastUpdatedDate = await websitePage.evaluate(() => {
@@ -283,6 +285,14 @@ async function checkXmlPage(link) {
 //https://www.unternehmer-impulse.de/
 // https://songtexte-schreiben-lernen.de/blog/ -- solved
 
+// service company but with blogs
+// 23
+//https://www.gefasoft.de
+// bernhardhartenstein.de
+// thomasguthmann
+// raddusch-spreewald
+// mindhelp.de,3159,2020-07-02,"=HYPERLINK(""https://www.mindhelp.de"", ""https://www.mindhelp.de"")"
+// https://www.seewolf.de/
 
 
 // Finished - upto 35 .... pages check = 460
