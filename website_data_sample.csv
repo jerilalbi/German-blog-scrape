@@ -1,6 +1,98 @@
-Name,Viewers,Last Updated,URL
-whatson-online.de,2615,2021-09-27,"=HYPERLINK(""https://www.whatson-online.de"", ""https://www.whatson-online.de"")"
-unterwegens.de,1596,2013-05-19,"=HYPERLINK(""https://www.unterwegens.de"", ""https://www.unterwegens.de"")"
-gcffm.de,2039,2014-10-23,"=HYPERLINK(""https://www.gcffm.de"", ""https://www.gcffm.de"")"
-airgo.de,1361,2023-04-18,"=HYPERLINK(""https://www.airgo.de"", ""https://www.airgo.de"")"
-marketing4results.de,1084,2023-04-11,"=HYPERLINK(""https://www.marketing4results.de"", ""https://www.marketing4results.de"")"
+Name,Viewers,Last Updated,URL,Email
+espresso-kaffee-blog.de,4093,12-10-2016,https://www.espresso-kaffee-blog.de,info@espresso-kaffee-blog.de
+phpgangsta.de,1082,02-02-2012,https://www.phpgangsta.de,info@phpgangsta.de
+sylvis-blog.de,1111,18-02-2021,https://www.sylvis-blog.de,kontakt@sylvis-blog.de
+kabel-blog.de,2655,07-04-2016,https://www.kabel-blog.de,kontakt@impressum.xyz
+serendipity-blog.de,2668,27-04-2023,https://www.serendipity-blog.de,hello@serendipity-blog.de
+fenster-profis.de,1134,18-11-2020,https://www.fenster-profis.de,info@profine-group.com
+unterwegens.de,1596,2013-05-19,https://www.unterwegens.de,sascha@unterwegens.de
+meinlieblingsessen.de,2382,18-07-2017,https://www.meinlieblingsessen.de,verticals@contentfleet.com
+kostenlose-javascripts.de,1665,12-05-2022,https://www.kostenlose-javascripts.de,kontakt@impressum.xyz
+azoren-blog.de,1529,01-07-2014,https://www.azoren-blog.de,info@sbid.de
+blogaufbau.de,1623,25-09-2020,https://www.blogaufbau.de,kontakt@blogaufbau.de
+marktding.de,1103,12-11-2020,https://www.marktding.de,christoph@marktding.de
+geekout.de,1212,30-06-2020,https://www.geekout.de,hello@geekout.de
+fitfuerjournalismus.de,1216,02-01-2016,https://www.fitfuerjournalismus.de,timo@stoppacher.de
+kreativrauschen.de,2274,12-12-2020,https://www.kreativrauschen.de,florian.sander@kreativrauschen.de
+eattrainlove.de,7011,10-12-2018,https://www.eattrainlove.de,kontakt@kristinwoltmann.de
+muenchen-querbeet.de,2564,09-12-2020,https://www.muenchen-querbeet.de,info@muenchen-querbeet.de
+nuernberg-und-so.de,8202,05-06-2020,https://www.nuernberg-und-so.de,redaktion@nuernbergundso.de
+der-blasse-schimmer.de,1783,01-05-2019,https://www.der-blasse-schimmer.de,info@der-blasse-schimmer.de
+botfrei.de,7929,07-02-2022,https://www.botfrei.de,info@botfrei.de
+steinhoefel.de,5708,26-10-2014,https://www.steinhoefel.de,mail@steinhoefel.de
+lectiobrevior.de,1091,08-10-2022,https://www.lectiobrevior.de,gerd.haefner@lmu.de
+flimmerblog.de,1063,21-10-2011,https://www.flimmerblog.de,mail@dirk-paulsen.de
+usabilityblog.de,3321,05-09-2017,https://www.usabilityblog.de,martin.beschnitt@eresult.de
+fitness-in-kiel.de,2057,15-11-2023,https://www.fitness-in-kiel.de,info@FIT-Kiel.de
+runtheskyline.de,2062,07-07-2023,https://www.runtheskyline.de,mail@frankfurt-marathon.com
+lebeblog.de,6905,20-07-2022,https://www.lebeblog.de,info@lebeblog.de
+legasthenie-englisch.de,1177,09-04-2014,https://www.legasthenie-englisch.de,info@legasthenie-englisch.de
+babykeks.de,3103,06-09-2015,https://www.babykeks.de,info@babykeks.de
+netzwerk-immovielien.de,5647,21-05-2019,https://www.netzwerk-immovielien.de,kontakt@netzwerk-immovielien.de
+guido-conrad.de,2147,11-10-2022 22:24,https://www.guido-conrad.de,service@powerstar.de
+revvet.de,4013,24-05-2018,https://www.revvet.de,admin@revvet.de
+kfiles.de,2022,02/16/2020 14:29:53,https://www.kfiles.de,konrad@my-rho.de
+maxfrei-blog.de,1028,08-03-2021,https://www.maxfrei-blog.de,info@interboden.de
+mama-arbeitet.de,4942,15-03-2023,https://www.mama-arbeitet.de,mail@mama-arbeitet.de
+meingesundheitszentrum.de,1964,28-05-2020,https://www.meingesundheitszentrum.de,info@apotheke-bergkamen.de
+reichdersterne.de,2070,03/19/2018 15:57:23,https://www.reichdersterne.de,kontakt@reichdersterne.de
+outdoorcamp.de,6032,28-10-2019,https://www.outdoorcamp.de,andreas@outdoorcamp.de
+rheindrache.de,5203,19-09-2023,https://www.rheindrache.de,petra@rheindrache.de
+smartphone-mania.de,2207,22-10-2022,https://www.smartphone-mania.de,admin@smartphone-mania.de
+kokosnussblog.de,1376,31-03-2015,https://www.kokosnussblog.de,info@kulau.de
+studilux.de,7157,16-01-2019,https://www.studilux.de,
+e11help.de,1039,08-12-2011,https://www.e11help.de,info@exiteleven.de
+sattesache.de,4504,23-03-2020,https://www.sattesache.de,laura@sattesache.de
+semester-in-schottland.de,1085,04-04-2019,https://www.semester-in-schottland.de,info@semester-in-schottland.de
+bob-food.de,1062,05-01-2019,https://www.bob-food.de,kontakt@bob-food.de
+frauwanderlust.de,2476,09-11-2019,https://www.frauwanderlust.de,cw@frauwanderlust.de
+foodilicious.de,1076,21-10-2021,https://www.foodilicious.de,foodilicious.de@gmail.com
+soldato.de,2462,25-10-2019,https://www.soldato.de,webmaster@soldato.de
+gekleckert.de,3965,14-12-2020,https://www.gekleckert.de,jens@gekleckert.de
+herzensdialoge.de,2038,06-07-2023,https://www.herzensdialoge.de,info@herzensdialoge.de
+myotherstories.de,7896,26-04-2023,https://www.myotherstories.de,post@myotherstories.de
+urban-woodworking.de,1790,19-12-2022,https://www.urban-woodworking.de,info@kurswerkstatt-nuernberg.de
+chilis-grillen.de,6295,25-05-2021,https://www.chilis-grillen.de,info@chilis-grillen.de
+generation-psy.de,1708,31-10-2023,https://www.generation-psy.de,kontakt@generation-psy.de
+tastentricks.de,1387,18-07-2023,https://www.tastentricks.de,info@tastentricks.de
+kolumne24.de,1324,20-08-2014,https://www.kolumne24.de,info@kolumne24.de
+travelpicture24.de,3129,26-03-2014,https://www.travelpicture24.de,info@travelpicture24.de
+neuespotter.de,3884,27-04-2011,https://www.neuespotter.de,info@webmobilisten.de
+raddusch-spreewald.de,4947,28-01-2019,https://www.raddusch-spreewald.de,info@raddusch-spreewald.de
+meeting-time.de,2142,03-05-2021,https://www.meeting-time.de,hallo@meeting-time.de
+familien-essen.de,7877,27-10-2023,https://www.familien-essen.de,hallo@alexundsarah.de
+almablog.de,4743,2018-11-05,https://www.almablog.de,hallo@almablog.de
+guidowackerbauer.de,1090,21-05-2023,https://www.guidowackerbauer.de,info@guidowackerbauer.de
+nutrilicious.de,3422,08-04-2021,https://www.nutrilicious.de,kontakt@nutrilicious.de
+thediywoman.de,3953,05-02-2020,https://www.thediywoman.de,info@thediywoman.de
+stammbaum-manufaktur.de,1032,22-02-2021,https://www.stammbaum-manufaktur.de,info@stammbaum-manufaktur.de
+indibit.de,4241,03-01-2022,https://www.indibit.de,sebastian@indibit.de
+menstruationstasse-maedels.de,4431,21-06-2023,https://www.menstruationstasse-maedels.de,christoph.kuestenweg@gmail.com
+alles-dog.de,3847,05-07-2020,https://www.alles-dog.de,info@alles-dog.de
+wanderungen-und-abenteuer.de,1638,26-11-2022,https://www.wanderungen-und-abenteuer.de,MichaelFeigel@web.de
+liebe-zur-hochzeit.de,6512,18-09-2023,https://www.liebe-zur-hochzeit.de,info@liebe-zur-hochzeit.de
+japan-in-muenchen.de,1108,26-08-2023,https://www.japan-in-muenchen.de,email@axelschwab.de
+melonengarten.de,2695,04-03-2020,https://www.melonengarten.de,daniel@weihmann.de
+strickblog.de,4112,01-11-2023,https://www.strickblog.de,arianamania@web.de
+shutuplegs.de,2210,29-11-2016,https://www.shutuplegs.de,mail@shutuplegs.de
+gingeredthings.de,5859,03-01-2021,https://www.gingeredthings.de,hallo@gingeredthings.de
+reisegabel.de,3361,15-04-2020,https://www.reisegabel.de,kontakt@reisegabel.de
+reisegeek.de,4811,01-08-2022,https://www.reisegeek.de,hallo@webolution.swiss
+kreativoderprimitiv.de,3002,03-04-2021,https://www.kreativoderprimitiv.de,kreativ-oder-primitiv@freenet.de
+gelbkariert.de,1099,11-01-2023,https://www.gelbkariert.de,k.albers@me.com
+sportwagen-kaufen.de,3817,15-01-2021,https://www.sportwagen-kaufen.de,alexander@duennes.de
+gothaer2know.de,6606,11-03-2021,https://www.gothaer2know.de,info@gothaer.de
+foto-dysein.de,2141,07-05-2017,https://www.foto-dysein.de,blog@foto-dysein.de
+symbology.de,2301,10-04-2023,https://www.symbology.de,mail@symbology.de
+sdrb.de,1325,20-07-2023,https://www.sdrb.de,sdrb@sdrb.de
+loreleyinfo.de,3176,22-06-2022,https://www.loreleyinfo.de,info@go-on-software.de
+leuchttage.de,1044,11-10-2020,https://www.leuchttage.de,leuchttage@gmx.de
+outdoorsucht.de,8260,05-11-2014,https://www.outdoorsucht.de,hallo@upscaled.com
+pedelec-biker.de,1321,26-11-2019,https://www.pedelec-biker.de,info@pedelec-biker.de
+travelsporteve.de,2535,14-10-2020,https://www.travelsporteve.de,info@travelsporteve.de
+gitarrenratgeber.de,1533,02-09-2020,https://www.gitarrenratgeber.de,admin@gitarrenratgeber.de
+rock-the-kitchen.de,2039,04-10-2020,https://www.rock-the-kitchen.de,mail@sylviareiter.de
+gundiontour.de,2380,25-10-2023,https://www.gundiontour.de,g@gudrunitt.de
+biotopicafarm.de,4507,26-07-2022,https://www.biotopicafarm.de,kontakt@biotopicafarm.de
+happybackpacker.de,8721,30-08-2023,https://www.happybackpacker.de,anja.knorr@gmail.com
+carinaontour.de,1539,01-08-2021,https://www.carinaontour.de,info@carinaontour.de

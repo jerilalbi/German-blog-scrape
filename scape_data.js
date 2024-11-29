@@ -6,6 +6,8 @@ const csvWriter = require('csv-writer');
 const axios = require('axios');
 const { parseStringPromise } = require('xml2js');
 const { timeout } = require('puppeteer');
+const csv = require('csv-parser');
+const whois = require('whois-json');
 
 const linuxUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
 
@@ -13,25 +15,21 @@ puppeteer.use(StealthPlugin());
 (async () => {
     try {
         // const extensionPath = path.join(process.cwd(), 'my-extension');
-        let pageLimit = 370;
-        // let pageLimit = 10000;
+        // let pageLimit = 370;
+        let pageLimit = 10000;
         let websiteData = [];
-        const webisteCategory = "travel-blog";
-        // const webisteCategory = "blog";
+        // const webisteCategory = "technology-blog";
+        const webisteCategory = "blog";
         let testNo = 1;
 
         const browser = await puppeteer.launch({
             // headless: "new",
             headless: false,
-            // args: [
-            //     `--disable-extensions-except=${extensionPath}`,
-            //     `--load-extension=${extensionPath}`
-            // ]
         });
 
         const page = await browser.newPage();
         await page.setUserAgent(linuxUserAgent);
-        outerLoop: for (let pageNo = 158; pageNo <= pageLimit; pageNo++) {
+        outerLoop: for (let pageNo = 6063; pageNo <= pageLimit; pageNo++) {
             await page.goto(`https://www.webwiki.de/${webisteCategory}?page=${pageNo}`, { waitUntil: 'networkidle2' });
             // await page.goto(`https://www.webwiki.de/neueste-bewertungen/a.html?page=1`, { waitUntil: 'networkidle2' });
 
@@ -159,7 +157,7 @@ puppeteer.use(StealthPlugin());
     } catch (error) {
         console.log(error);
     }
-})();
+});
 
 function makeExcelFile(websiteData) {
 
@@ -175,12 +173,13 @@ function makeExcelFile(websiteData) {
                 { id: 'monthly_viewers', title: 'Viewers' },
                 { id: 'last_updated', title: 'Last Updated' },
                 { id: 'url', title: 'URL' },
+                { id: 'email', title: 'Email' },
             ]
     });
 
     const formattedData = websiteData.map(item => ({
         ...item,
-        url: `=HYPERLINK("${item.website}", "${item.website}")`
+        url: `=HYPERLINK("${item.url}", "${item.url}")`
     }));
 
     writer.writeRecords(formattedData)
@@ -209,96 +208,63 @@ async function checkXmlPage(link) {
     }
 }
 
-// change https://www.dia-blog.de/ - 6, 8, 10, 11, 12, 15, 20 solved
-// https://www.skoda-portal.de/
-// https://karminrot-blog.de/
-// https://kielfeder-blog.de/
-// https://www.yourdealz.de/
-// https://out-takes.de/
-// https://www.hh-gruppe.de/
-//https://fairwertung.de/
-// https://www.abmahnung.de/
-// https://www.rgf.de/de/home/
-// https://www.bellaswonderworld.de/blog/
-// https://o-tonart.de/category/blog/
-// https://www.conventionbureau-karlsruhe.de/
-// https://www.centigrade.de/de/blog/
-// https://www.sem-deutschland.de/
-// https://www.amperpark.de/
-// https://www.geizstudent.de/blog/
-// https://www.personal-wissen.de/
-// https://www.dtms.de/
-// https://karriere-und-bildung.de/
-// https://anstiftung.de/
-// https://silvesterlauf.de/
-// https://www.savills.de/
-// https://www.flowbirthing.de/
-// https://innocenceindanger.de/blog/
-// https://textil-mode.de/de/ - 70
-// https://www.indesign-blog.de/
-// https://www.telefontraining-claudiafischer.de/
-// https://www.metahr.de/
-// https://www.freiberufler-blog.de/
-// https://www.christagoede.de/
-// https://www.sepago.de/en/home/
-// https://www.spike05.de/
-// https://www.reisebineblog.de/
-// https://www.rss-blog.de/
-// https://www.freilichtbuehne-nettelstedt.de/
-// https://www.crossgolf.de/
-// https://www.der-hammerwirt.de/
-// https://ghostwriter-blog.de/
-// https://dotcomblog.de/
-// https://eineweltblabla.de/
-// https://www.arminkoenig.de/
-// https://www.domus-software.de/
-// https://www.lemm.de/
-// https://www.der-wirtschaftspruefungs-blog.de/
-// https://dgl-online.de/
-// https://sosimmer.de/
-// https://www.jungundaltspielt.de/
-// https://evs-blog.de/
-// https://www.radkultur-bw.de/ --- upto solved
+(async () => {
 
-//https://dmsg-niedersachsen.de/
-// https://www.alexfuerst.de/
-//https://initiative-gegen-die-todesstrafe.de/
-// https://www.schiller-buch.de/
-// https://seo.de/
-// https://muk-blog.de/
-// https://www.bleiben-sie-sicher.de/  -- upto solved
+    const csvPath = 'überarbeitet upwork typ.csv'
+    try {
+        const dataArray = await readCsvfile(csvPath);
+        const websiteData = [];
 
-//https://www.nepomucenum.de/
-// https://www.bahnhofsvision.de/
-// https://www.buerodienste-in.de/
-// https://www.definition-von-fett.de/
-// https://www.philipp-poisel.de/
-// https://www.gge-blog.de/
-//https://profashionals.de/
-// https://apotheke-bergkamen.de/
-// https://www.junge-selbsthilfe-blog.de/
-// https://www.burgerbe.de/
-// https://www.kallebaecker.de/
-// https://www.benutzerfreun.de/
-// https://fosteringinnovation.de/
-// https://watchthusiast.de/
-//https://www.unternehmer-impulse.de/
-// https://songtexte-schreiben-lernen.de/blog/ -- solved
+        const browser = await puppeteer.launch({
+            // headless: "new",
+            headless: false,
+        });
 
-// service company but with blogs
-// 23
-//https://www.gefasoft.de
-// bernhardhartenstein.de
-// thomasguthmann
-// raddusch-spreewald
-// mindhelp.de,3159,2020-07-02,"=HYPERLINK(""https://www.mindhelp.de"", ""https://www.mindhelp.de"")"
-// https://www.seewolf.de/
+        const page = await browser.newPage();
+        await page.setUserAgent(linuxUserAgent);
 
+        for (let i = 0; i < dataArray.length; i++) {
+            try {
+                console.log(i + 1);
 
-// Finished - upto 35 .... pages check = 460
+                // await page.goto(`https://www.carinaontour.de/impressum/`, { waitUntil: 'networkidle2' });
+                await page.goto(`https://www.${dataArray[i].Name}/impressum`, { waitUntil: 'networkidle2' });
 
-// 101 - 56
+                const emails = await page.evaluate(() => {
+                    const bodyText = document.body.innerText;
+                    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b/g;
+                    const matches = bodyText.match(emailRegex);
+                    return matches ? [...new Set(matches)] : [];
+                });
 
-// Wed, 12 Jul 2017
+                websiteData.push({
+                    name: dataArray[i].Name,
+                    monthly_viewers: dataArray[i].Viewers,
+                    last_updated: dataArray[i]['Last Updated'],
+                    url: `https://www.${dataArray[i].Name}`,
+                    email: emails.length > 0 ? emails[0] : ""
+                })
 
-// final csv checked - 64
+                if (i % 10 === 0) {
+                    makeExcelFile(websiteData)
+                }
+            } catch (error) {
+
+            }
+        }
+        makeExcelFile(websiteData);
+        await browser.close();
+    } catch (error) {
+        console.log(error)
+    }
+})()
+
+function readCsvfile(path) {
+    return new Promise((resolve, reject) => {
+        const resultData = [];
+        fs.createReadStream(path).pipe(csv())
+            .on('data', (data) => resultData.push(data))
+            .on('end', () => resolve(resultData))
+            .on('error', (error) => reject(error))
+    })
+}
