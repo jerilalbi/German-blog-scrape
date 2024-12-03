@@ -160,11 +160,6 @@ puppeteer.use(StealthPlugin());
 });
 
 function makeExcelFile(websiteData) {
-
-    // const filePath = 'website_data.csv';
-
-    // const fileExists = fs.existsSync(filePath);
-
     const writer = csvWriter.createObjectCsvWriter({
         path: 'website_data2.csv',
         header:
@@ -175,7 +170,6 @@ function makeExcelFile(websiteData) {
                 { id: 'url', title: 'URL' },
                 // { id: 'email', title: 'Email' },
             ],
-        append: true
     });
 
     // const formattedData = websiteData.map(item => ({
@@ -274,13 +268,16 @@ async function getBlogDatas() {
     try {
         const currentDataSet = new Set();
 
+        let websiteData = [];
         const currentDataPath = "website_data_sample.csv";
-        const currentData = await readCsvfile(currentDataPath);
-        currentData.forEach(item => currentDataSet.add(item.Name));
+        const currentOldData = await readCsvfile(currentDataPath);
+        const currentData = await readCsvfile("website_data2.csv")
+        currentOldData.forEach(item => currentDataSet.add(item.Name));
+        currentData.forEach(item => websiteData.push({ name: item.Name, monthly_viewers: item.Viewers, url: item.URL, }));
 
         const links = [
-            "https://www.bloggerei.de/rubrik_15_Computerblogs",
-            "https://www.bloggerei.de/rubrik_8_Fotoblogs",
+            // "https://www.bloggerei.de/rubrik_15_Computerblogs",
+            // "https://www.bloggerei.de/rubrik_8_Fotoblogs",
             "https://www.bloggerei.de/rubrik_17_Funnyblogs",
             "https://www.bloggerei.de/rubrik_10_Hobbyblogs",
             "https://www.bloggerei.de/rubrik_19_Jobblogs",
@@ -309,7 +306,6 @@ async function getBlogDatas() {
 
         let pageLimit = 30;
         let testIndex = 1;
-        const websiteData = [];
 
         const browser = await puppeteer.launch({
             headless: false,
@@ -318,8 +314,8 @@ async function getBlogDatas() {
         const page = await browser.newPage();
         await page.setUserAgent(linuxUserAgent);
 
-        for (let link of links) {
-            for (let i = 19; i <= pageLimit; i++) {
+        outerLoop: for (let link of links) {
+            for (let i = 1; i <= pageLimit; i++) {
                 try {
                     console.log(testIndex);
                     testIndex++;
@@ -329,48 +325,28 @@ async function getBlogDatas() {
                     await page.waitForSelector(".maincontent", { timeout: "60000" });
 
                     pageLimit = await page.$$eval('.pagination-bottom > a ', (anchors) => parseInt(anchors[anchors.length - 1].innerText, 10));
+                    let blogs = [];
 
-                    // const blogs = await page.evaluate(() => {
-                    //     try {
-                    //         const blogData = [];
-                    //         const blogElements = document.querySelectorAll('.bloginfos');
-
-                    //         blogElements.forEach((blog) => {
-                    //             const rawLink = blog.querySelector('.extblog').href;
-                    //             const rawDate = blog.querySelector('.posttime').innerText;
-                    //             const parsedUrl = new URL(rawLink);
-                    //             const link = parsedUrl.protocol + '//' + parsedUrl.hostname;
-                    //             const dateData = rawDate.match(/\d+/);
-                    //             const date = parseInt(dateData[0], 10);
-
-                    //             blogData.push({ link, date });
-                    //         })
-                    //         return blogData;
-                    //     } catch (error) {
-                    //         console.log(error);
-                    //     }
-                    // });
-                    const blogs = await page.$$eval(".bloginfos", el => {
+                    blogs = await page.$$eval(".bloginfos", el => {
                         const blogData = [];
                         el.forEach((blog) => {
                             const rawLink = blog.querySelector('.extblog').href;
-                            const rawDate = blog.querySelector('.posttime').innerText;
+                            const rawDate = blog.querySelector('.posttime') ? blog.querySelector('.posttime').innerText : "";
                             const parsedUrl = new URL(rawLink);
                             const link = parsedUrl.protocol + '//' + parsedUrl.hostname;
-                            const dateData = rawDate.match(/\d+/);
-                            const date = parseInt(dateData[0], 10);
+                            const dateData = rawDate ? rawDate.match(/\d+/) : "";
+                            const date = rawDate ? parseInt(dateData[0], 10) : "";
 
                             blogData.push({ link, date });
                         })
                         return blogData;
                     })
-                    console.log(blogs);
 
-                    if (blogs[blogs.length - 1].date >= 365) {
+
+                    if (blogs[blogs.length - 1].date >= 365 || blogs[blogs.length - 1].date === "") {
                         for (const blog of blogs) {
-                            if (blog.link.toLowerCase().endsWith(".de") && blog.date > 365) {
+                            if (blog.link.toLowerCase().endsWith(".de")) {
                                 try {
-                                    console.log(blog.link)
                                     const blogPage = await browser.newPage();
                                     await blogPage.setUserAgent(linuxUserAgent);
 
@@ -411,20 +387,40 @@ async function getBlogDatas() {
                         }
                     }
                     if (websiteData.length > 0) {
+                        console.log(`current data length = ${websiteData.length}`)
                         makeExcelFile(websiteData);
                     }
                     await new Promise(r => setTimeout(r, 2000))
                 } catch (error) {
-
+                    console.log(error);
+                }
+                console.log(`${link}_${i} -- completed`)
+                if (websiteData.length > 100) {
+                    break outerLoop;
                 }
             }
 
         }
         makeExcelFile(websiteData);
-        // await browser.close();
+        await browser.close();
     } catch (error) {
         console.log(error)
     }
 }
+// https://www.bloggerei.de/rubrik_24_Gourmetblogs_10 -- completed
+// getBlogDatas();
 
-getBlogDatas();
+async function checkRedendancy() {
+    const currentOldData = await readCsvfile("website_data_sample.csv");
+    const currentData = await readCsvfile("website_data2.csv");
+    const currentDataSet = new Set(currentOldData.map(row => JSON.stringify(row.Name)));
+    const common = currentData.filter(row => currentDataSet.has(JSON.stringify(row.Name)));
+
+    if (common.length > 0) {
+        console.log('Common Entries:', common);
+    } else {
+        console.log('No common entries found.');
+    }
+}
+
+checkRedendancy();
