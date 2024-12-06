@@ -162,14 +162,14 @@ puppeteer.use(StealthPlugin());
 
 function makeExcelFile(websiteData) {
     const writer = csvWriter.createObjectCsvWriter({
-        path: 'website_data2.csv',
+        path: 'website_emails.csv',
         header:
             [
-                { id: 'name', title: 'Name' },
-                { id: 'monthly_viewers', title: 'Viewers' },
+                // { id: 'name', title: 'Name' },
+                // { id: 'monthly_viewers', title: 'Viewers' },
                 // { id: 'last_updated', title: 'Last Updated' },
-                { id: 'url', title: 'URL' },
-                // { id: 'email', title: 'Email' },
+                // { id: 'url', title: 'URL' },
+                { id: 'email', title: 'Email' },
             ],
     });
 
@@ -204,12 +204,10 @@ async function checkXmlPage(link) {
     }
 }
 
-(async () => {
-
-    const csvPath = 'überarbeitet upwork typ.csv'
+async function getEmailFromWebsite() {
     try {
-        const dataArray = await readCsvfile(csvPath);
-        const websiteData = [];
+        const dataArray = await readCsvfile("website_data2.csv");
+        const emailData = [];
 
         const browser = await puppeteer.launch({
             // headless: "new",
@@ -222,38 +220,49 @@ async function checkXmlPage(link) {
         for (let i = 0; i < dataArray.length; i++) {
             try {
                 console.log(i + 1);
+                try {
+                    await page.goto(`${dataArray[i].URL}/impressum`, { waitUntil: 'networkidle2', timeout: 0 });
+                } catch (error) { }
 
-                // await page.goto(`https://www.carinaontour.de/impressum/`, { waitUntil: 'networkidle2' });
-                await page.goto(`https://www.${dataArray[i].Name}/impressum`, { waitUntil: 'networkidle2' });
+                await page.waitForSelector("body", { timeout: 0 });
 
                 const emails = await page.evaluate(() => {
-                    const bodyText = document.body.innerText;
+                    const bodyText = document.body ? document.body.innerText : "";
+
+                    const normalizedText = bodyText
+                        .replace(/\s*\(at\)\s*/gi, "@")
+                        .replace(/\s*at\s*/gi, "@")
+                        .replace(/\s*\(dot\)\s*/gi, ".")
+                        .replace(/\s*dot\s*/gi, ".")
+                        .replace(/\s*\(punkt\)\s*/gi, ".")
+                        .replace(/\s*punkt\s*/gi, ".");
+
                     const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b/g;
-                    const matches = bodyText.match(emailRegex);
+                    const matches = normalizedText.match(emailRegex);
+
                     return matches ? [...new Set(matches)] : [];
+
                 });
 
-                websiteData.push({
-                    name: dataArray[i].Name,
-                    monthly_viewers: dataArray[i].Viewers,
-                    last_updated: dataArray[i]['Last Updated'],
-                    url: `https://www.${dataArray[i].Name}`,
+                emailData.push({
+                    url: dataArray[i].URL,
                     email: emails.length > 0 ? emails[0] : ""
                 })
 
-                if (i % 10 === 0) {
-                    makeExcelFile(websiteData)
+                if ((i + 1) % 10 === 0) {
+                    makeExcelFile(emailData);
                 }
             } catch (error) {
-
+                console.log(error);
             }
         }
-        makeExcelFile(websiteData);
+        makeExcelFile(emailData);
         await browser.close();
     } catch (error) {
         console.log(error)
     }
-})
+}
+// getEmailFromWebsite()
 
 function readCsvfile(path) {
     return new Promise((resolve, reject) => {
@@ -413,10 +422,10 @@ async function getBlogDatas() {
     }
 }
 // https://www.bloggerei.de/rubrik_7_Reiseblogs_22  -- completed
-getBlogDatas();
+// getBlogDatas();
 
 async function checkRedendancy() {
-    const currentOldData = await readCsvfile("website_data_sample.csv");
+    const currentOldData = await readCsvfile("website_data.csv");
     const currentData = await readCsvfile("website_data2.csv");
     const currentDataSet = new Set(currentOldData.map(row => JSON.stringify(row.Name)));
     const common = currentData.filter(row => currentDataSet.has(JSON.stringify(row.Name)));
@@ -504,3 +513,19 @@ async function checkForAds() {
 }
 // https://www.suessundselig.de/
 // checkForAds()
+
+async function removeLinkfromFile() {
+    try {
+        const websiteData = await readCsvfile("website_emails.csv");
+        const emailOnlyData = [];
+
+        websiteData.forEach((data) => { emailOnlyData.push({ email: data.Email }) })
+        makeExcelFile(emailOnlyData)
+
+    } catch (error) {
+
+    }
+}
+removeLinkfromFile();
+
+// search google "reiseblogs" site:.de before:2023
