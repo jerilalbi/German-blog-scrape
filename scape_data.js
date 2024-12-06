@@ -8,6 +8,7 @@ const { parseStringPromise } = require('xml2js');
 const csv = require('csv-parser');
 const url = require('url');
 const { timeout } = require('puppeteer');
+const { log } = require('console');
 
 const linuxUserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36";
 
@@ -278,33 +279,34 @@ async function getBlogDatas() {
         const links = [
             // "https://www.bloggerei.de/rubrik_15_Computerblogs",
             // "https://www.bloggerei.de/rubrik_8_Fotoblogs",
-            "https://www.bloggerei.de/rubrik_17_Funnyblogs",
-            "https://www.bloggerei.de/rubrik_10_Hobbyblogs",
-            "https://www.bloggerei.de/rubrik_19_Jobblogs",
-            "https://www.bloggerei.de/rubrik_4_Kulturblogs",
-            "https://www.bloggerei.de/rubrik_12_Literaturblogs",
-            "https://www.bloggerei.de/rubrik_13_Musikblogs",
-            "https://www.bloggerei.de/rubrik_18_Privateblogs",
-            "https://www.bloggerei.de/rubrik_14_Seoblogs",
-            "https://www.bloggerei.de/rubrik_3_Sportblogs",
-            "https://www.bloggerei.de/rubrik_16_Tierblogs",
-            "https://www.bloggerei.de/rubrik_1_Wirtschaftsblogs",
-            "https://www.bloggerei.de/rubrik_21_Corporateblogs",
-            "https://www.bloggerei.de/rubrik_11_Freizeitblogs",
-            "https://www.bloggerei.de/rubrik_24_Gourmetblogs",
-            "https://www.bloggerei.de/rubrik_6_Internetblogs",
-            "https://www.bloggerei.de/rubrik_26_Jurablogs",
-            "https://www.bloggerei.de/rubrik_5_Kunstblogs",
-            "https://www.bloggerei.de/rubrik_20_Medizinblogs",
-            "https://www.bloggerei.de/rubrik_2_Politikblogs",
-            "https://www.bloggerei.de/rubrik_7_Reiseblogs",
+            // "https://www.bloggerei.de/rubrik_17_Funnyblogs",
+            // "https://www.bloggerei.de/rubrik_10_Hobbyblogs",
+            // "https://www.bloggerei.de/rubrik_19_Jobblogs",
+            // "https://www.bloggerei.de/rubrik_4_Kulturblogs",
+            // "https://www.bloggerei.de/rubrik_12_Literaturblogs",
+            // "https://www.bloggerei.de/rubrik_13_Musikblogs",
+            // "https://www.bloggerei.de/rubrik_18_Privateblogs",
+            // "https://www.bloggerei.de/rubrik_14_Seoblogs",
+            // "https://www.bloggerei.de/rubrik_3_Sportblogs",
+            // "https://www.bloggerei.de/rubrik_16_Tierblogs",
+            // "https://www.bloggerei.de/rubrik_1_Wirtschaftsblogs",
+            // "https://www.bloggerei.de/rubrik_21_Corporateblogs",
+            // "https://www.bloggerei.de/rubrik_11_Freizeitblogs",
+            // "https://www.bloggerei.de/rubrik_24_Gourmetblogs",
+            // "https://www.bloggerei.de/rubrik_6_Internetblogs",
+            // "https://www.bloggerei.de/rubrik_26_Jurablogs",
+            // "https://www.bloggerei.de/rubrik_5_Kunstblogs",
+            // "https://www.bloggerei.de/rubrik_20_Medizinblogs",
+            // "https://www.bloggerei.de/rubrik_2_Politikblogs",
+            // "https://www.bloggerei.de/rubrik_7_Reiseblogs",
             "https://www.bloggerei.de/rubrik_25_Spieleblogs",
             "https://www.bloggerei.de/rubrik_23_Stadtblogs",
             "https://www.bloggerei.de/rubrik_27_Umweltblogs",
             "https://www.bloggerei.de/rubrik_22_Wissenschaftsblogs",
         ];
 
-        let pageLimit = 30;
+        let startInBtn = 4;
+        let pageLimit = 40;
         let testIndex = 1;
 
         const browser = await puppeteer.launch({
@@ -315,14 +317,14 @@ async function getBlogDatas() {
         await page.setUserAgent(linuxUserAgent);
 
         outerLoop: for (let link of links) {
-            for (let i = 1; i <= pageLimit; i++) {
+            for (let i = startInBtn; i <= pageLimit; i++) {
                 try {
                     console.log(testIndex);
                     testIndex++;
 
-                    await page.goto(`${link}_${i}`, { waitUntil: 'networkidle2' })
+                    await page.goto(`${link}_${i}`, { waitUntil: 'networkidle2', timeout: 0 })
 
-                    await page.waitForSelector(".maincontent", { timeout: "60000" });
+                    await page.waitForSelector(".maincontent", { timeout: 60000 });
 
                     pageLimit = await page.$$eval('.pagination-bottom > a ', (anchors) => parseInt(anchors[anchors.length - 1].innerText, 10));
                     let blogs = [];
@@ -350,19 +352,21 @@ async function getBlogDatas() {
                                     const blogPage = await browser.newPage();
                                     await blogPage.setUserAgent(linuxUserAgent);
 
-                                    await blogPage.goto(blog.link, { waitUntil: 'networkidle2' })
+                                    // await blogPage.goto("https://www.suessundselig.de", { waitUntil: 'networkidle2' })
+                                    await blogPage.goto(blog.link, { waitUntil: 'networkidle2', timeout: 0 })
 
-                                    await blogPage.waitForSelector("body", { timeout: "60000" })
+                                    await blogPage.waitForSelector("body", { timeout: 60000 })
 
                                     const elementCount = await blogPage.evaluate(() => {
                                         return document.body.querySelectorAll('*').length;
                                     });
 
                                     if (elementCount > 10) {
-                                        if (!currentDataSet.has(blog.link)) {
+                                        const name = new URL(blog.link).hostname.replace(/^www\./, '')
+                                        if (!currentDataSet.has(name)) {
                                             const trafficPage = await browser.newPage();
                                             await trafficPage.setUserAgent(linuxUserAgent);
-                                            await trafficPage.goto(`https://data.similarweb.com/api/v1/data?domain=${blog.link}`, { waitUntil: 'networkidle2' });
+                                            await trafficPage.goto(`https://data.similarweb.com/api/v1/data?domain=${blog.link}`, { waitUntil: 'networkidle2', timeout: 0 });
 
                                             const jsonData = await trafficPage.evaluate(() => {
                                                 return JSON.parse(document.body.innerText);
@@ -372,7 +376,7 @@ async function getBlogDatas() {
 
                                             if (avgTrafficData >= 1000 && avgTrafficData <= 10000) {
                                                 websiteData.push({
-                                                    name: new URL(blog.link).hostname.replace(/^www\./, ''),
+                                                    name: name,
                                                     monthly_viewers: avgTrafficData,
                                                     url: blog.link,
                                                 })
@@ -395,7 +399,8 @@ async function getBlogDatas() {
                     console.log(error);
                 }
                 console.log(`${link}_${i} -- completed`)
-                if (websiteData.length > 100) {
+                startInBtn = 1;
+                if (websiteData.length > 102) {
                     break outerLoop;
                 }
             }
@@ -407,8 +412,8 @@ async function getBlogDatas() {
         console.log(error)
     }
 }
-// https://www.bloggerei.de/rubrik_24_Gourmetblogs_10 -- completed
-// getBlogDatas();
+// https://www.bloggerei.de/rubrik_7_Reiseblogs_22  -- completed
+getBlogDatas();
 
 async function checkRedendancy() {
     const currentOldData = await readCsvfile("website_data_sample.csv");
@@ -423,4 +428,79 @@ async function checkRedendancy() {
     }
 }
 
-checkRedendancy();
+// checkRedendancy();
+
+async function checkWebisteLastDate() {
+    try {
+        const websiteData = await readCsvfile("website_data2.csv");
+        const newWebsites = [];
+        let test = 1;
+
+        const browser = await puppeteer.launch({ headless: false })
+        const page = await browser.newPage();
+
+
+        for (let i = 95; i <= websiteData.length; i++) {
+            console.log(test);
+            test++;
+            try {
+                await page.goto(websiteData[i].URL, { waitUntil: "networkidle2" });
+
+                await page.waitForSelector("body", { timeout: "60000" })
+                const content = await page.evaluate(() => document.body.innerText);
+
+                const count = (content.match(/2024/g) || []).length;
+
+                if (count > 1) {
+                    newWebsites.push({ name: websiteData[i].URL })
+                }
+            } catch (error) {
+
+            }
+        }
+        console.log(newWebsites);
+
+        await browser.close();
+    } catch (error) {
+        console.log(error);
+    }
+}
+// checkWebisteLastDate();
+
+async function checkForAds() {
+    try {
+        const websiteData = await readCsvfile("website_data2.csv");
+        const websiteWithAds = [];
+        let test = 1;
+
+        const browser = await puppeteer.launch({ headless: false })
+        const page = await browser.newPage();
+
+        for (let i = 95; i <= websiteData.length; i++) {
+            try {
+                console.log(test);
+                test++;
+
+                await page.goto(websiteData[i].URL, { waitUntil: "networkidle2", timeout: 0 });
+                await page.waitForSelector("body", { timeout: 60000 });
+
+                const links = await page.$$eval("iframe", anchor => anchor.map(atag => atag.src))
+
+                const googleAds = links.some(href => href.includes('https://googleads.g.doubleclick.net'));
+
+                if (googleAds) {
+                    websiteWithAds.push({ name: websiteData[i].URL })
+                }
+            } catch (error) {
+
+            }
+        }
+        console.log(websiteWithAds);
+
+        await browser.close();
+    } catch (error) {
+        console.log(error);
+    }
+}
+// https://www.suessundselig.de/
+// checkForAds()
