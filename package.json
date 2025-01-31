@@ -1,8 +1,9 @@
 {
   "name": "german-webiste-scraper",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,10 +15,11 @@
     "csv-writer": "^1.6.0",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
-    "puppeteer": "^23.7.1",
+    "playwright": "^1.49.1",
+    "playwright-extra": "^4.3.6",
+    "puppeteer": "^24.1.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "whois-json": "^2.0.4",
     "xml2js": "^0.6.2"
   }
 }
